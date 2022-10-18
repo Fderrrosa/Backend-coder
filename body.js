@@ -1,3 +1,4 @@
+
 class DatosUs {
     constructor(nombre, apellido, libros, mascotas) {
         this._nombre = nombre;
@@ -41,7 +42,7 @@ const libros = [
 
 const newPerson = new DatosUs("Sofia", "Gonzales", libros ,["Perro", "Gato"])
 
-console.log(newPerson.getFullName());
+/*console.log(newPerson.getFullName());
 // Sofia Gonzalez
 console.log("Libros- Nombre y Autor " + newPerson.getBookNames()); 
 // Cometierra - Dolores Reyes / Las Malas - Camila Sosa Villada
@@ -52,5 +53,4 @@ console.log("Cantidad Mascotas " + newPerson.countMascotas());
 // 2 mascotas - Perro y Gato
 newPerson.addMascota('Loro');
 console.log( "Cantidad Mascotas " +  newPerson.countMascotas()); 
-// 3 mascotas - Perro, Gato y Loro
-
+// 3 mascotas - Perro, Gato y Loro*/
