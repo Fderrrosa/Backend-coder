@@ -1,77 +1,101 @@
-const fs = require('fs');
-
+const fs = require("fs");
 
 class Contenedor {
-    constructor (productos) {
-        this.ruta = productos
-        console.log("prueba");
+    constructor(name){
+        this.filename = name;
+    }
+    
+    async save(product){
+        try {
+            if(fs.existsSync(this.filename)){
+                const productos = await this.getAll();
+                if(productos.length>0){
+                    //agregar un producto adicional
+                    const lastId =productos[productos.length-1].id+1;
+                    product.id = lastId;
+                    productos.push(product);
+                    await fs.promises.writeFile(this.filename,JSON.stringify(productos,null,2));
+                } else{
+                    //agregamos un primer producto
+                    product.id = 1;
+                    await fs.promises.writeFile(this.filename,JSON.stringify([product],null,2));
+                }
+            } else {
+                product.id = 1;
+                await fs.promises.writeFile(this.filename,JSON.stringify([product],null,2));
+            }
+        } catch (error) {
+            return "El producto no pudo ser guardado";
+        }
+    }
+
+    async getAll(){
+        try {
+            const contenido = await fs.promises.readFile(this.filename,"utf-8");
+            if(contenido.length>0){
+                const productos = JSON.parse(contenido);
+                return productos;
+            } else{
+                return [];
+            }
+        } catch (error) {
+            return "El archivo no se puede ser leido";
+        }
+    }
+
+    async getById(id){
+        try {
+            //obtener todos los productos.
+            const productos = await this.getAll();
+            //buscar nuestro producto por el id
+            const producto = productos.find(elemento=>elemento.id === id);
+            return producto;
+        } catch (error) {
+            return "El producto no se encuentra";
+        }
+    }
+
+    async deleteById(id){
+        //[1,2,3,4,5].
+        //[1,2,4,5]
+        try {
+            const productos = await this.getAll();
+            const newProducts = productos.filter(elemento=>elemento.id !== id);
+            await fs.promises.writeFile(this.filename,JSON.stringify(newProducts,null,2));
+            return `El producto con el id ${id} fue elimnado`;
+        } catch (error) {
+            return "El elemento no puede ser eliminado"
+        }
+    }
+
+    getName(){
+        return this.filename;
     }
 }
 
-//PRUEBA.TODO
-
-    getAll = async () => {
-        try {
-            const stock = await promises.readFile(this.ruta, 'utf-8')
-            
-            return JSON.parse(stock);
-
-        } catch (error) {
-            await promises.writeFile(this.ruta, JSON.stringify([], null, 1))
-            const stock = await promises.readFile(this.ruta, 'utf-8')
-            
-            return JSON.parse(stock);
-        }
-    }
-
-    saveProducto = async producto => {
-        const arrProductos = await this.getAll()
-
-        arrProductos.push(producto);
-
-        try {
-            await promises.writeFile(this.ruta, JSON.stringify(arrProductos, null, 4))
-            return producto.id
-        } catch (error) {
-            throw new Error('No se guardó el producto')
-        }
-    }
-
-    getById = async id => {
-        const arrProductos = await this.getAll()
-        const productoBuscado = arrProductos.find( p => p.id === id);
-
-        return productoBuscado;
-
-    }
-
-    deleteById = async id => {
-        const arrProductos = await this.getAll()
-        const productoBorrado = arrProductos.filter(p => p.id !== id)
-
-        try {
-            await promises.writeFile(this.ruta, JSON.stringify(productoBorrado, null, 1))
-        } catch (error) {
-            throw new Error('No se pudo actualizar', error)
-        }
-    }
-
-    deleteAll = async () => {
-        return await promises.writeFile(this.ruta, JSON.stringify([], null, 2))
-    }
-
-
-
-const db = new Contenedor('productos.txt')
-
-const test = async () => {    
-    console.log(await db.saveProducto({ name: "Reloj", price: "15.000", photo: "https://res.cloudinary.com/dngbc9awr/image/upload/v1661611420/samples/ecommerce/analog-classic.jpg", id: 1 }))
-    console.log(await db.getAll())
-    console.log(await db.getById(3))
-    console.log(await db.deleteById(1))
-    await db.deleteAll()
+const producto1={
+    title: "camisa deportiva",
+    price: 520,
+    thumbnail: "https://falabella.scene7.com/is/image/FalabellaCO/8263644_1?wid=800&hei=800&qlt=70"
+}
+const producto2={
+    title: "camisa niño",
+    price: 320,
+    thumbnail: "https://offcorss.vteximg.com.br/arquivos/ids/744125-460-540/51048651-Azul-13-4404_1.jpg?v=637844236663900000"
 }
 
-test()
+const manejadorProductos = new Contenedor("productos.txt");
+console.log(manejadorProductos);
 
-//export default Contenedor;
+const getData = async()=>{
+    //guardar un producto
+    await manejadorProductos.save(producto1);
+    await manejadorProductos.save(producto2);
+    const productos = await manejadorProductos.getAll();
+    console.log("productos",productos);
+    const productoEncontrado = await manejadorProductos.getById(1);
+    console.log("producto encontrado>", productoEncontrado);
+    await manejadorProductos.deleteById(1);
+}
+getData();
+
