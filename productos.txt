@@ -1,23 +1,14 @@
 [
-    {
-        "title": "Reloj",
-        "price": 15.000,
-        "photo": "https://res.cloudinary.com/dngbc9awr/image/upload/v1661611420/samples/ecommerce/analog-classic.jpg",
-        "id": 1
-
-    },
-
-    {
-        "title": "Zapatillas Deportivas",
-        "price": 8.500,
-        "photo": "https://res.cloudinary.com/dngbc9awr/image/upload/v1661611424/samples/ecommerce/shoes.png",
-        "id": 2
-    },
-
-    {
-        "title": "Cartera de Cuero",
-        "price": 45.500,
-        "photo": "https://res.cloudinary.com/dngbc9awr/image/upload/v1661611428/samples/ecommerce/leather-bag-gray.jpg",
-        "id": 3  
-    }
-]
+  {
+    "title": "Zapatillas Deportivas",
+    "price": 8.5,
+    "photo": "https://res.cloudinary.com/dngbc9awr/image/upload/v1661611424/samples/ecommerce/shoes.png",
+    "id": 2
+  },
+  {
+    "title": "Cartera de Cuero",
+    "price": 45.5,
+    "photo": "https://res.cloudinary.com/dngbc9awr/image/upload/v1661611428/samples/ecommerce/leather-bag-gray.jpg",
+    "id": 3
+  }
+  ]
